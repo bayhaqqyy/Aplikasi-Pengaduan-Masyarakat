@@ -1,0 +1,54 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+bin/
+obj/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# Rider / IntelliJ
+.idea/
+*.sln.iml
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# Visual Studio Code settings (if any)
+.vscode/
+
+# Publish output
+publish/
+*.Publish.xml
+*.pubxml.user
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+*.db
+*.mdf
+*.ldf
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.cache
+
+# Sensitive or local files
+*.env
+.env.local

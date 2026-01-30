@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RootNamespace>Tampilan_Pelapor</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Description>"Sistem Informasi Pengaduan Masyarakat (SIPM) adalah platform digital yang berfungsi sebagai wadah aspirasi warga. Aplikasi ini mendukung transparansi pelaporan, pelacakan status aduan, dan manajemen data yang terintegrasi dengan database pusat"
+
+Aplikasi ini di buat oleh :
+1. BINTANG TRIADMAJA  (250401010075) 
+2. NEVADA PRIDHO  (250401010223)
+3. RENI YUNIARTI PUTRI  (250401070202)
+4. RAFLI ABDUL BAY HAQQY  (250401010113)
+5. PRIMUANDY LEOKOY  (250401010209)</Description>
+    <Copyright>Copyright : @2026 KELOMPOK 3</Copyright>
+    <Company>Company Name : KELOMPOK 3 UNSIA</Company>
+    <Product>Product Name : APLIKASI PENGADUAN MASYARAKAT</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
