@@ -12,6 +12,37 @@ namespace Tampilan_Pelapor
 {
     public partial class LoginForm : Form
     {
+
+        // Konsep 10: Array untuk menyimpan username dan password (sebagai database lokal sederhana)
+        // Format: {username, password}
+        string[,] userArray = {
+            { "admin", "123" },
+            { "bintang", "p@ssword" },
+            { "pelapor1", "rahasia" }
+        };
+
+        // Konsep 11: Collection (List) untuk mencatat riwayat login (Log)
+        List<string> loginHistory = new List<string>();
+
+        int loginAttempts = 0;
+
+
+        // Konsep 23: Parameter (menerima inputUser dan inputPass)
+        private bool CekKredensial(string inputUser, string inputPass)
+        {
+            foreach (var i in Enumerable.Range(0, userArray.GetLength(0)))
+            {
+                string usernameDiArray = userArray[i, 0];
+                string passwordDiArray = userArray[i, 1];
+
+                if (inputUser == usernameDiArray && inputPass == passwordDiArray)
+                {
+                    return true; // Login cocok
+                }
+            }
+            return false; // Tidak ditemukan yang cocok
+        }
+
         public LoginForm()
         {
             InitializeComponent();
@@ -56,23 +87,42 @@ namespace Tampilan_Pelapor
 
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            if (textBoxUsername.Text == "" || textBoxUsername.Text == "")
-            {
-                MessageBox.Show("Username atau Password tidak boleh kosong!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (textBoxUsername.Text == "admin" && textBoxPassword.Text == "123")
-            {
-                MessageBox.Show("Login Berhasil! Selamat datang.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string user = textBoxUsername.Text;
+            string pass = textBoxPassword.Text;
 
-                // Membuka form utama dan menutup form login
+            // --- Konsep 17: Do Loop (Validasi input tidak boleh kosong) ---
+            do
+            {
+                if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
+                {
+                    MessageBox.Show("Input tidak boleh kosong!");
+                    return;
+                }
+            } while (false);
+
+            // --- Pemanggilan Fungsi dengan Parameter (Konsep 23) ---
+            if (CekKredensial(user, pass))
+            {
+                loginHistory.Add($"Sukses: {user} pada {DateTime.Now}");
+
+                MessageBox.Show("Login Berhasil!", "Sukses");
                 Form1 frmUtama = new Form1();
                 frmUtama.Show();
                 this.Hide();
             }
             else
             {
-                MessageBox.Show("Username atau Password salah!", "Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                loginAttempts++;
+                loginHistory.Add($"Gagal: {user} pada {DateTime.Now}");
+
+                // --- Konsep 16: While Loop (Contoh simulasi jika salah 3 kali) ---
+                int i = 0;
+                while (i < 1)
+                {
+                    MessageBox.Show($"Login Gagal! Percobaan ke-{loginAttempts}", "Gagal");
+                    i++;
+                }
+
                 textBoxPassword.Clear();
                 textBoxUsername.Focus();
             }
