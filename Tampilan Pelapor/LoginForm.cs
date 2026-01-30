@@ -27,14 +27,14 @@ namespace Tampilan_Pelapor
         int loginAttempts = 0;
 
 
-        // Konsep 23: Parameter (menerima inputUser dan inputPass)
+        // Konsep 23 & 18: Parameter (menerima inputUser dan inputPass)
         private bool CekKredensial(string inputUser, string inputPass)
         {
             foreach (var i in Enumerable.Range(0, userArray.GetLength(0)))
             {
                 string usernameDiArray = userArray[i, 0];
                 string passwordDiArray = userArray[i, 1];
-
+                // Konsep 12, If statement untuk pengecekan username & password
                 if (inputUser == usernameDiArray && inputPass == passwordDiArray)
                 {
                     return true; // Login cocok
@@ -93,6 +93,8 @@ namespace Tampilan_Pelapor
             // --- Konsep 17: Do Loop (Validasi input tidak boleh kosong) ---
             do
             {
+            // Konsep 6: String Methods, memanipulasi string input user dan passwowrd.
+
                 if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
                 {
                     MessageBox.Show("Input tidak boleh kosong!");
@@ -103,6 +105,7 @@ namespace Tampilan_Pelapor
             // --- Pemanggilan Fungsi dengan Parameter (Konsep 23) ---
             if (CekKredensial(user, pass))
             {
+                // Konsep 6: Penggunaan date & time
                 loginHistory.Add($"Sukses: {user} pada {DateTime.Now}");
 
                 MessageBox.Show("Login Berhasil!", "Sukses");

@@ -18,6 +18,7 @@ namespace Tampilan_Pelapor
 
         public string GetGenderString(Gender gender)
         {
+            // Konsep 12 Select Case Statement: mendapatkan gender
             switch (gender)
             {
                 case Gender.male:
@@ -35,6 +36,7 @@ namespace Tampilan_Pelapor
             InitializeComponent();
         }
 
+        // Konsep 19: Method (Sub). Tidak ada "return", hanya menjalankan tugas.
         private void buttonReset_Click(object sender, EventArgs e)
         {
             textNama.Clear();
