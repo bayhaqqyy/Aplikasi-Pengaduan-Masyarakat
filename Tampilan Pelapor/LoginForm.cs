@@ -93,7 +93,7 @@ namespace Tampilan_Pelapor
             // --- Konsep 17: Do Loop (Validasi input tidak boleh kosong) ---
             do
             {
-            // Konsep 6: String Methods, memanipulasi string input user dan passwowrd.
+                // Konsep 6: String Methods, memanipulasi string input user dan passwowrd.
 
                 if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
                 {
@@ -143,6 +143,12 @@ namespace Tampilan_Pelapor
             Form1 frmAduan = new Form1();
             frmAduan.Show();
             this.Hide();
+        }
+
+        private void buttonTentang_Click(object sender, EventArgs e)
+        {
+            AboutBox1 frmAduan = new AboutBox1();
+            frmAduan.Show();
         }
     }
 }

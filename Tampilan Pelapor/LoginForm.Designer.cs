@@ -200,6 +200,7 @@
             buttonTentang.TabIndex = 5;
             buttonTentang.Text = "TENTANG";
             buttonTentang.UseVisualStyleBackColor = true;
+            buttonTentang.Click += buttonTentang_Click;
             // 
             // buttonBantuan
             // 
