@@ -86,6 +86,11 @@ namespace Tampilan_Pelapor
                         break;
                 }
             }
+            else
+            {
+                // Kosongkan jika tidak ada yang dipilih
+                richTextBoxJawaban.Clear();
+            }
         }
     }
 }

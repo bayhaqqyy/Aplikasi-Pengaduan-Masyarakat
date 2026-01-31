@@ -34,7 +34,7 @@
             labelTimer = new Label();
             listViewPertanyaan = new ListView();
             kolom1 = new ColumnHeader();
-            kolom2 = new ColumnHeader();
+            kolom2 = new ColumnHeader("(none)");
             groupBox1 = new GroupBox();
             richTextBoxJawaban = new RichTextBox();
             groupBox1.SuspendLayout();
@@ -69,6 +69,7 @@
             // 
             // listViewPertanyaan
             // 
+            listViewPertanyaan.BackColor = SystemColors.ActiveCaption;
             listViewPertanyaan.Columns.AddRange(new ColumnHeader[] { kolom1, kolom2 });
             listViewPertanyaan.Font = new Font("Comic Sans MS", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             listViewPertanyaan.GridLines = true;
@@ -93,7 +94,6 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(richTextBoxJawaban);
             groupBox1.Controls.Add(listViewPertanyaan);
             groupBox1.Location = new Point(30, 91);
             groupBox1.Name = "groupBox1";
@@ -103,11 +103,14 @@
             // 
             // richTextBoxJawaban
             // 
+            richTextBoxJawaban.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBoxJawaban.BackColor = SystemColors.ActiveCaption;
             richTextBoxJawaban.BorderStyle = BorderStyle.None;
-            richTextBoxJawaban.Location = new Point(59, 87);
+            richTextBoxJawaban.Font = new Font("Comic Sans MS", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            richTextBoxJawaban.Location = new Point(665, 108);
             richTextBoxJawaban.Name = "richTextBoxJawaban";
             richTextBoxJawaban.ReadOnly = true;
-            richTextBoxJawaban.Size = new Size(549, 85);
+            richTextBoxJawaban.Size = new Size(452, 323);
             richTextBoxJawaban.TabIndex = 1;
             richTextBoxJawaban.Text = "";
             richTextBoxJawaban.TextChanged += listView1_SelectedIndexChanged;
@@ -118,6 +121,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1129, 663);
+            Controls.Add(richTextBoxJawaban);
             Controls.Add(groupBox1);
             Controls.Add(labelTimer);
             Controls.Add(label1);
