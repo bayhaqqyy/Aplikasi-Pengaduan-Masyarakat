@@ -72,6 +72,7 @@
             listViewPertanyaan.BackColor = SystemColors.ActiveCaption;
             listViewPertanyaan.Columns.AddRange(new ColumnHeader[] { kolom1, kolom2 });
             listViewPertanyaan.Font = new Font("Comic Sans MS", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            listViewPertanyaan.FullRowSelect = true;
             listViewPertanyaan.GridLines = true;
             listViewPertanyaan.Location = new Point(6, 17);
             listViewPertanyaan.Name = "listViewPertanyaan";

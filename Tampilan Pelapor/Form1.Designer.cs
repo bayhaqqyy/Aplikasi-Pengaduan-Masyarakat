@@ -126,27 +126,27 @@
             // 
             laporanToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { simpanLaporanToolStripMenuItem, bukaFolderLaporanToolStripMenuItem, cetakLaporanToolStripMenuItem });
             laporanToolStripMenuItem.Name = "laporanToolStripMenuItem";
-            laporanToolStripMenuItem.Size = new Size(104, 34);
+            laporanToolStripMenuItem.Size = new Size(107, 34);
             laporanToolStripMenuItem.Text = "Laporan";
             // 
             // simpanLaporanToolStripMenuItem
             // 
             simpanLaporanToolStripMenuItem.Name = "simpanLaporanToolStripMenuItem";
-            simpanLaporanToolStripMenuItem.Size = new Size(256, 34);
+            simpanLaporanToolStripMenuItem.Size = new Size(315, 38);
             simpanLaporanToolStripMenuItem.Text = "Simpan Laporan";
             simpanLaporanToolStripMenuItem.Click += simpanLaporanToolStripMenuItem_Click;
             // 
             // bukaFolderLaporanToolStripMenuItem
             // 
             bukaFolderLaporanToolStripMenuItem.Name = "bukaFolderLaporanToolStripMenuItem";
-            bukaFolderLaporanToolStripMenuItem.Size = new Size(256, 34);
+            bukaFolderLaporanToolStripMenuItem.Size = new Size(315, 38);
             bukaFolderLaporanToolStripMenuItem.Text = "Buka Folder Laporan";
             bukaFolderLaporanToolStripMenuItem.Click += bukaFolderLaporanToolStripMenuItem_Click;
             // 
             // cetakLaporanToolStripMenuItem
             // 
             cetakLaporanToolStripMenuItem.Name = "cetakLaporanToolStripMenuItem";
-            cetakLaporanToolStripMenuItem.Size = new Size(256, 34);
+            cetakLaporanToolStripMenuItem.Size = new Size(315, 38);
             cetakLaporanToolStripMenuItem.Text = "Cetak Laporan";
             cetakLaporanToolStripMenuItem.Click += cetakLaporanToolStripMenuItem_Click;
             // 
@@ -154,13 +154,13 @@
             // 
             debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { infoDebugToolStripMenuItem });
             debugToolStripMenuItem.Name = "debugToolStripMenuItem";
-            debugToolStripMenuItem.Size = new Size(86, 34);
+            debugToolStripMenuItem.Size = new Size(94, 34);
             debugToolStripMenuItem.Text = "Debug";
             // 
             // infoDebugToolStripMenuItem
             // 
             infoDebugToolStripMenuItem.Name = "infoDebugToolStripMenuItem";
-            infoDebugToolStripMenuItem.Size = new Size(187, 34);
+            infoDebugToolStripMenuItem.Size = new Size(225, 38);
             infoDebugToolStripMenuItem.Text = "Info Debug";
             infoDebugToolStripMenuItem.Click += infoDebugToolStripMenuItem_Click;
             // 
@@ -484,6 +484,7 @@
             // listDaftar
             // 
             listDaftar.Columns.AddRange(new ColumnHeader[] { columnNO, columnTanggal, columnKategori, columnJudul });
+            listDaftar.FullRowSelect = true;
             listDaftar.Location = new Point(12, 32);
             listDaftar.Margin = new Padding(2);
             listDaftar.Name = "listDaftar";
