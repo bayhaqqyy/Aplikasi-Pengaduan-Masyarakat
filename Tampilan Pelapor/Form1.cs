@@ -8,10 +8,12 @@ using System.Linq;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+// #fitur-namespace
 namespace Tampilan_Pelapor
 {
     public partial class Form1 : Form
     {
+        // #fitur-variables
         private int totalAduan = 0;
         private readonly string reportDirectory;
         private string[] cachedReportLines = Array.Empty<string>();
@@ -19,12 +21,14 @@ namespace Tampilan_Pelapor
         public const string HELPDESK_PHONE_NUMBER = "+628123456789";
         Gender selectedGender;
 
+        // #fitur-enum
         public enum Gender
         {
             male,
             female
         }
 
+        // #fitur-function-method
         public string GetGenderString(Gender gender)
         {
             // Konsep 12 Select Case Statement: mendapatkan gender
@@ -40,6 +44,7 @@ namespace Tampilan_Pelapor
                     return "Tidak Diketahui";
             }
         }
+        // #fitur-constructor
         public Form1()
         {
             InitializeComponent();
@@ -47,6 +52,7 @@ namespace Tampilan_Pelapor
         }
 
         // Konsep 19: Method (Sub). Tidak ada "return", hanya menjalankan tugas.
+        // #fitur-method
         private void buttonReset_Click(object sender, EventArgs e)
         {
             textNama.Clear();
@@ -60,6 +66,7 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-if-string-file-exception
         private void listDaftar_SelectedIndexChanged(object sender, EventArgs e)
         {
             RichTextBox rtbDetailPengaduan = this.rtbDetail;
@@ -117,6 +124,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-method
         private void Form1_Load(object sender, EventArgs e)
         {
             rtbDetail.ReadOnly = true;
@@ -124,6 +132,7 @@ namespace Tampilan_Pelapor
             labelTotalAduan.Text = "Total Aduan: " + totalAduan;
         }
 
+        // #fitur-if-string-date-parameter
         private void buttonKirim_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textNama.Text) ||
@@ -163,6 +172,7 @@ namespace Tampilan_Pelapor
 
             int idx = listDaftar.Items.Count + 1;
 
+            // #fitur-passing-arrays
             var item = new ListViewItem(new[] {
                 idx.ToString(),
                 dateTimePicker1.Value.ToShortDateString(),
@@ -191,6 +201,7 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-file
         private void buttonFoto_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -233,11 +244,13 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-date-time
         private void timerPengaduan_Tick(object sender, EventArgs e)
         {
             labelTimer.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss");
         }
 
+        // #fitur-file-directory-dates-times
         private void simpanLaporanToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -271,6 +284,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-directory
         private void bukaFolderLaporanToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -284,6 +298,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-printing-report
         private void cetakLaporanToolStripMenuItem_Click(object sender, EventArgs e)
         {
             cachedReportLines = BuildReportLines();
@@ -313,6 +328,7 @@ namespace Tampilan_Pelapor
             preview.ShowDialog();
         }
 
+        // #fitur-debug-watch
         private void infoDebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string status = Debugger.IsAttached ? "Debugger terpasang" : "Debugger tidak terpasang";
@@ -324,6 +340,7 @@ namespace Tampilan_Pelapor
             MessageBox.Show(summary, "Info Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // #fitur-printing-alignment-calc-text
         private void ReportPrintDocument_PrintPage(object sender, PrintPageEventArgs e)
         {
             if (cachedReportLines.Length == 0)
@@ -365,12 +382,14 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-string-methods
         private string BuildReportText()
         {
             string[] lines = BuildReportLines();
             return string.Join(Environment.NewLine, lines);
         }
 
+        // #fitur-timespan-for-loop-array-collection
         private string[] BuildReportLines()
         {
             if (listDaftar.Items.Count == 0)
@@ -427,6 +446,7 @@ namespace Tampilan_Pelapor
             return lines.ToArray();
         }
 
+        // #fitur-passing-arrays
         private string CreateFixedWidthRow(string[] columns, int[] widths)
         {
             int columnCount = Math.Min(columns.Length, widths.Length);
@@ -439,6 +459,7 @@ namespace Tampilan_Pelapor
             return string.Join(" | ", parts);
         }
 
+        // #fitur-byref
         private void NormalizeTitle(ref string title)
         {
             if (title == null)
@@ -454,6 +475,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-byref-out
         private bool TryBuildReportPath(out string reportPath)
         {
             reportPath = string.Empty;
@@ -471,6 +493,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-directory-file
         private string GetLastReportPath()
         {
             try
@@ -492,6 +515,7 @@ namespace Tampilan_Pelapor
             }
         }
 
+        // #fitur-fileinfo
         private string[] GetFotoFileInfoLines()
         {
             string imagePath = pictureBoxFoto.Tag as string;

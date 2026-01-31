@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// #fitur-namespace
 namespace Tampilan_Pelapor
 {
     public partial class LoginForm : Form
     {
 
+        // #fitur-array
         // Konsep 10: Array untuk menyimpan username dan password (sebagai database lokal sederhana)
         // Format: {username, password}
         string[,] userArray = {
@@ -21,19 +23,23 @@ namespace Tampilan_Pelapor
             { "pelapor1", "rahasia" }
         };
 
+        // #fitur-collection
         // Konsep 11: Collection (List) untuk mencatat riwayat login (Log)
         List<string> loginHistory = new List<string>();
 
         int loginAttempts = 0;
 
 
+        // #fitur-parameter
         // Konsep 23 & 18: Parameter (menerima inputUser dan inputPass)
         private bool CekKredensial(string inputUser, string inputPass)
         {
+            // #fitur-foreach-loop
             foreach (var i in Enumerable.Range(0, userArray.GetLength(0)))
             {
                 string usernameDiArray = userArray[i, 0];
                 string passwordDiArray = userArray[i, 1];
+                // #fitur-if
                 // Konsep 12, If statement untuk pengecekan username & password
                 if (inputUser == usernameDiArray && inputPass == passwordDiArray)
                 {
@@ -68,6 +74,7 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-if
         private void checkBoxPassword_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxPassword.Checked)
@@ -85,6 +92,7 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-do-loop-string-methods-date-time
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             string user = textBoxUsername.Text;
@@ -120,6 +128,7 @@ namespace Tampilan_Pelapor
 
                 // --- Konsep 16: While Loop (Contoh simulasi jika salah 3 kali) ---
                 int i = 0;
+                // #fitur-while-loop
                 while (i < 1)
                 {
                     MessageBox.Show($"Login Gagal! Percobaan ke-{loginAttempts}", "Gagal");

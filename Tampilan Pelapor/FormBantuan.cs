@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+// #fitur-namespace
 namespace Tampilan_Pelapor
 {
     public partial class FormBantuan : Form
@@ -18,6 +19,7 @@ namespace Tampilan_Pelapor
             InitializeComponent();
         }
 
+        // #fitur-date-time
         private void timer1_Tick(object sender, EventArgs e)
         {
             labelTimer.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss");
@@ -35,6 +37,7 @@ namespace Tampilan_Pelapor
             AddFaqItem("5", "Bagaimana cara mengecek status laporan?");
             AddFaqItem("6", "Mengapa laporan saya ditolak?");
         }
+        // #fitur-method-parameter
         private void AddFaqItem(string no, string pertanyaan)
         {
             ListViewItem item = new ListViewItem(no);
@@ -47,6 +50,7 @@ namespace Tampilan_Pelapor
 
         }
 
+        // #fitur-if-select-case
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listViewPertanyaan.SelectedItems.Count > 0)
