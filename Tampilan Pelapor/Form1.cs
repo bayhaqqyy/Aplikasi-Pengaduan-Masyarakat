@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -6,6 +13,8 @@ namespace Tampilan_Pelapor
     public partial class Form1 : Form
     {
         private int totalAduan = 0;
+        private readonly string reportDirectory;
+        private string[] cachedReportLines = Array.Empty<string>();
 
         public const string HELPDESK_PHONE_NUMBER = "+628123456789";
         Gender selectedGender;
@@ -34,6 +43,7 @@ namespace Tampilan_Pelapor
         public Form1()
         {
             InitializeComponent();
+            reportDirectory = Path.Combine(Application.StartupPath, "Laporan");
         }
 
         // Konsep 19: Method (Sub). Tidak ada "return", hanya menjalankan tugas.
@@ -46,6 +56,7 @@ namespace Tampilan_Pelapor
             textJudul.Clear();
             rtbDeskripsi.Clear();
             pictureBoxFoto.Image = null;
+            pictureBoxFoto.Tag = null;
 
         }
 
@@ -225,6 +236,278 @@ namespace Tampilan_Pelapor
         private void timerPengaduan_Tick(object sender, EventArgs e)
         {
             labelTimer.Text = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss");
+        }
+
+        private void simpanLaporanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!TryBuildReportPath(out string reportPath))
+                {
+                    MessageBox.Show("Folder laporan tidak tersedia.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string reportText = BuildReportText();
+                File.WriteAllText(reportPath, reportText);
+
+                DateTime created = File.GetCreationTime(reportPath);
+                DateTime modified = File.GetLastWriteTime(reportPath);
+                int fileCount = Directory.GetFiles(reportDirectory, "*.txt").Length;
+
+                MessageBox.Show(
+                    "Laporan tersimpan.\n" +
+                    $"Lokasi: {reportPath}\n" +
+                    $"Dibuat: {created}\n" +
+                    $"Diubah: {modified}\n" +
+                    $"Jumlah file laporan: {fileCount}",
+                    "Sukses",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal menyimpan laporan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void bukaFolderLaporanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Directory.CreateDirectory(reportDirectory);
+                Process.Start("explorer.exe", reportDirectory);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal membuka folder laporan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cetakLaporanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cachedReportLines = BuildReportLines();
+            if (cachedReportLines.Length == 0)
+            {
+                MessageBox.Show("Belum ada data untuk dicetak.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using PrintDocument doc = new PrintDocument();
+            doc.DocumentName = "Laporan Pengaduan";
+            doc.PrintPage += ReportPrintDocument_PrintPage;
+
+            using PrintDialog printDialog = new PrintDialog();
+            printDialog.Document = doc;
+            printDialog.UseEXDialog = true;
+
+            if (printDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            using PrintPreviewDialog preview = new PrintPreviewDialog();
+            preview.Document = doc;
+            preview.Width = 900;
+            preview.Height = 700;
+            preview.ShowDialog();
+        }
+
+        private void infoDebugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string status = Debugger.IsAttached ? "Debugger terpasang" : "Debugger tidak terpasang";
+            string summary = $"Status debug: {status}\nTotal aduan: {totalAduan}\nLast report path: {GetLastReportPath()}";
+
+            Debug.WriteLine($"[WATCH] totalAduan = {totalAduan}");
+            Debug.WriteLine($"[WATCH] listDaftar.Count = {listDaftar.Items.Count}");
+
+            MessageBox.Show(summary, "Info Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ReportPrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            if (cachedReportLines.Length == 0)
+            {
+                e.HasMorePages = false;
+                return;
+            }
+
+            using Font titleFont = new Font("Consolas", 13, FontStyle.Bold);
+            using Font bodyFont = new Font("Consolas", 10);
+
+            float y = e.MarginBounds.Top;
+            for (int i = 0; i < cachedReportLines.Length; i++)
+            {
+                string line = cachedReportLines[i];
+                Font font = i == 0 ? titleFont : bodyFont;
+                StringAlignment alignment = StringAlignment.Near;
+
+                if (i == 0)
+                {
+                    alignment = StringAlignment.Center;
+                }
+                else if (line.StartsWith("Total Aduan:", StringComparison.OrdinalIgnoreCase))
+                {
+                    alignment = StringAlignment.Far;
+                }
+
+                using StringFormat format = new StringFormat { Alignment = alignment, LineAlignment = StringAlignment.Near };
+                SizeF size = e.Graphics.MeasureString(line, font, e.MarginBounds.Width);
+                RectangleF rect = new RectangleF(e.MarginBounds.Left, y, e.MarginBounds.Width, size.Height);
+                e.Graphics.DrawString(line, font, Brushes.Black, rect, format);
+                y += size.Height + 2;
+
+                if (y > e.MarginBounds.Bottom)
+                {
+                    e.HasMorePages = false;
+                    break;
+                }
+            }
+        }
+
+        private string BuildReportText()
+        {
+            string[] lines = BuildReportLines();
+            return string.Join(Environment.NewLine, lines);
+        }
+
+        private string[] BuildReportLines()
+        {
+            if (listDaftar.Items.Count == 0)
+            {
+                return Array.Empty<string>();
+            }
+
+            List<string> lines = new List<string>();
+            lines.Add("LAPORAN PENGADUAN MASYARAKAT");
+            lines.Add(new string('-', 44));
+
+            string judul = textJudul.Text;
+            NormalizeTitle(ref judul);
+
+            string deskripsi = rtbDeskripsi.Text ?? string.Empty;
+            deskripsi = deskripsi.Trim();
+            int deskripsiLength = deskripsi.Length;
+
+            DateTime laporanDate = dateTimePicker1.Value.Date;
+            TimeSpan usiaLaporan = DateTime.Now - laporanDate;
+
+            lines.Add($"Judul        : {judul}");
+            lines.Add($"Nama         : {textNama.Text}");
+            lines.Add($"NIK          : {textNik.Text}");
+            lines.Add($"Kategori     : {comboKategori.Text}");
+            lines.Add($"Tanggal      : {laporanDate:dd MMMM yyyy}");
+            lines.Add($"Usia Laporan : {usiaLaporan.Days} hari {usiaLaporan.Hours} jam");
+            lines.Add($"Panjang Judul: {judul.Length} karakter");
+            lines.Add($"Panjang Desc : {deskripsiLength} karakter");
+            lines.Add($"Total Aduan: {listDaftar.Items.Count}");
+
+            lines.Add(string.Empty);
+            lines.Add("Ringkas Daftar (No | Tanggal | Kategori | Judul)");
+            lines.Add(new string('-', 60));
+
+            for (int i = 0; i < listDaftar.Items.Count; i++)
+            {
+                ListViewItem item = listDaftar.Items[i];
+                string row = CreateFixedWidthRow(new[]
+                {
+                    (i + 1).ToString(),
+                    item.SubItems[1].Text,
+                    item.SubItems[2].Text,
+                    item.SubItems[3].Text
+                }, new[] { 3, 12, 20, 30 });
+                lines.Add(row);
+            }
+
+            lines.Add(string.Empty);
+            lines.Add("Detail Lampiran Foto:");
+            lines.Add(new string('-', 30));
+            lines.AddRange(GetFotoFileInfoLines());
+
+            return lines.ToArray();
+        }
+
+        private string CreateFixedWidthRow(string[] columns, int[] widths)
+        {
+            int columnCount = Math.Min(columns.Length, widths.Length);
+            List<string> parts = new List<string>();
+            for (int i = 0; i < columnCount; i++)
+            {
+                string value = columns[i] ?? string.Empty;
+                parts.Add(value.PadRight(widths[i]));
+            }
+            return string.Join(" | ", parts);
+        }
+
+        private void NormalizeTitle(ref string title)
+        {
+            if (title == null)
+            {
+                title = "(Tanpa Judul)";
+                return;
+            }
+
+            title = title.Trim();
+            if (title.Length == 0)
+            {
+                title = "(Tanpa Judul)";
+            }
+        }
+
+        private bool TryBuildReportPath(out string reportPath)
+        {
+            reportPath = string.Empty;
+            try
+            {
+                Directory.CreateDirectory(reportDirectory);
+                string fileName = $"Laporan_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
+                reportPath = Path.Combine(reportDirectory, fileName);
+                return true;
+            }
+            catch
+            {
+                reportPath = string.Empty;
+                return false;
+            }
+        }
+
+        private string GetLastReportPath()
+        {
+            try
+            {
+                if (!Directory.Exists(reportDirectory))
+                {
+                    return "-";
+                }
+
+                string last = Directory.GetFiles(reportDirectory, "*.txt")
+                    .OrderByDescending(File.GetLastWriteTime)
+                    .FirstOrDefault();
+
+                return string.IsNullOrWhiteSpace(last) ? "-" : last;
+            }
+            catch
+            {
+                return "-";
+            }
+        }
+
+        private string[] GetFotoFileInfoLines()
+        {
+            string imagePath = pictureBoxFoto.Tag as string;
+            if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
+            {
+                return new[] { "Tidak ada lampiran foto." };
+            }
+
+            FileInfo info = new FileInfo(imagePath);
+            return new[]
+            {
+                $"Nama File   : {info.Name}",
+                $"Ukuran      : {info.Length} bytes",
+                $"Dibuat      : {info.CreationTime}",
+                $"Diubah      : {info.LastWriteTime}"
+            };
         }
     }
 }

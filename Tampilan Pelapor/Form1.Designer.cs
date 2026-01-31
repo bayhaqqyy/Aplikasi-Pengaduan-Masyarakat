@@ -34,6 +34,12 @@
             buatPengaduanToolStripMenuItem = new ToolStripMenuItem();
             tentangToolStripMenuItem = new ToolStripMenuItem();
             pengaduanToolStripMenuItem = new ToolStripMenuItem();
+            laporanToolStripMenuItem = new ToolStripMenuItem();
+            simpanLaporanToolStripMenuItem = new ToolStripMenuItem();
+            bukaFolderLaporanToolStripMenuItem = new ToolStripMenuItem();
+            cetakLaporanToolStripMenuItem = new ToolStripMenuItem();
+            debugToolStripMenuItem = new ToolStripMenuItem();
+            infoDebugToolStripMenuItem = new ToolStripMenuItem();
             groupForm = new GroupBox();
             femaleRadioButton = new RadioButton();
             maleRadioButton = new RadioButton();
@@ -81,7 +87,7 @@
             // 
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.ImageScalingSize = new Size(24, 24);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { homeToolStripMenuItem, buatPengaduanToolStripMenuItem, tentangToolStripMenuItem, pengaduanToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { homeToolStripMenuItem, buatPengaduanToolStripMenuItem, tentangToolStripMenuItem, pengaduanToolStripMenuItem, laporanToolStripMenuItem, debugToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1178, 38);
@@ -115,6 +121,48 @@
             pengaduanToolStripMenuItem.Size = new Size(107, 34);
             pengaduanToolStripMenuItem.Text = "Bantuan";
             pengaduanToolStripMenuItem.Click += pengaduanToolStripMenuItem_Click;
+            // 
+            // laporanToolStripMenuItem
+            // 
+            laporanToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { simpanLaporanToolStripMenuItem, bukaFolderLaporanToolStripMenuItem, cetakLaporanToolStripMenuItem });
+            laporanToolStripMenuItem.Name = "laporanToolStripMenuItem";
+            laporanToolStripMenuItem.Size = new Size(104, 34);
+            laporanToolStripMenuItem.Text = "Laporan";
+            // 
+            // simpanLaporanToolStripMenuItem
+            // 
+            simpanLaporanToolStripMenuItem.Name = "simpanLaporanToolStripMenuItem";
+            simpanLaporanToolStripMenuItem.Size = new Size(256, 34);
+            simpanLaporanToolStripMenuItem.Text = "Simpan Laporan";
+            simpanLaporanToolStripMenuItem.Click += simpanLaporanToolStripMenuItem_Click;
+            // 
+            // bukaFolderLaporanToolStripMenuItem
+            // 
+            bukaFolderLaporanToolStripMenuItem.Name = "bukaFolderLaporanToolStripMenuItem";
+            bukaFolderLaporanToolStripMenuItem.Size = new Size(256, 34);
+            bukaFolderLaporanToolStripMenuItem.Text = "Buka Folder Laporan";
+            bukaFolderLaporanToolStripMenuItem.Click += bukaFolderLaporanToolStripMenuItem_Click;
+            // 
+            // cetakLaporanToolStripMenuItem
+            // 
+            cetakLaporanToolStripMenuItem.Name = "cetakLaporanToolStripMenuItem";
+            cetakLaporanToolStripMenuItem.Size = new Size(256, 34);
+            cetakLaporanToolStripMenuItem.Text = "Cetak Laporan";
+            cetakLaporanToolStripMenuItem.Click += cetakLaporanToolStripMenuItem_Click;
+            // 
+            // debugToolStripMenuItem
+            // 
+            debugToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { infoDebugToolStripMenuItem });
+            debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            debugToolStripMenuItem.Size = new Size(86, 34);
+            debugToolStripMenuItem.Text = "Debug";
+            // 
+            // infoDebugToolStripMenuItem
+            // 
+            infoDebugToolStripMenuItem.Name = "infoDebugToolStripMenuItem";
+            infoDebugToolStripMenuItem.Size = new Size(187, 34);
+            infoDebugToolStripMenuItem.Text = "Info Debug";
+            infoDebugToolStripMenuItem.Click += infoDebugToolStripMenuItem_Click;
             // 
             // groupForm
             // 
@@ -522,6 +570,12 @@
         private ToolStripMenuItem buatPengaduanToolStripMenuItem;
         private ToolStripMenuItem tentangToolStripMenuItem;
         private ToolStripMenuItem pengaduanToolStripMenuItem;
+        private ToolStripMenuItem laporanToolStripMenuItem;
+        private ToolStripMenuItem simpanLaporanToolStripMenuItem;
+        private ToolStripMenuItem bukaFolderLaporanToolStripMenuItem;
+        private ToolStripMenuItem cetakLaporanToolStripMenuItem;
+        private ToolStripMenuItem debugToolStripMenuItem;
+        private ToolStripMenuItem infoDebugToolStripMenuItem;
         private GroupBox groupForm;
         private Label labelNama;
         private Label labelNik;
