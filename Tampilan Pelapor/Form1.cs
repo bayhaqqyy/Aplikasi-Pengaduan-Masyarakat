@@ -397,24 +397,37 @@ namespace Tampilan_Pelapor
                 return Array.Empty<string>();
             }
 
+            if (listDaftar.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Pilih satu data di daftar pengaduan terlebih dahulu.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return Array.Empty<string>();
+            }
+
+            ListViewItem selectedItem = listDaftar.SelectedItems[0];
+
             List<string> lines = new List<string>();
             lines.Add("LAPORAN PENGADUAN MASYARAKAT");
             lines.Add(new string('-', 44));
 
-            string judul = textJudul.Text;
+            string judul = selectedItem.SubItems.Count > 3 ? selectedItem.SubItems[3].Text : string.Empty;
             NormalizeTitle(ref judul);
 
-            string deskripsi = rtbDeskripsi.Text ?? string.Empty;
+            string deskripsi = selectedItem.SubItems.Count > 7 ? selectedItem.SubItems[7].Text : string.Empty;
             deskripsi = deskripsi.Trim();
             int deskripsiLength = deskripsi.Length;
 
-            DateTime laporanDate = dateTimePicker1.Value.Date;
+            DateTime laporanDate;
+            string tanggalText = selectedItem.SubItems.Count > 1 ? selectedItem.SubItems[1].Text : string.Empty;
+            if (!DateTime.TryParse(tanggalText, out laporanDate))
+            {
+                laporanDate = DateTime.Now.Date;
+            }
             TimeSpan usiaLaporan = DateTime.Now - laporanDate;
 
             lines.Add($"Judul        : {judul}");
-            lines.Add($"Nama         : {textNama.Text}");
-            lines.Add($"NIK          : {textNik.Text}");
-            lines.Add($"Kategori     : {comboKategori.Text}");
+            lines.Add($"Nama         : {(selectedItem.SubItems.Count > 5 ? selectedItem.SubItems[5].Text : string.Empty)}");
+            lines.Add($"NIK          : {(selectedItem.SubItems.Count > 4 ? selectedItem.SubItems[4].Text : string.Empty)}");
+            lines.Add($"Kategori     : {(selectedItem.SubItems.Count > 2 ? selectedItem.SubItems[2].Text : string.Empty)}");
             lines.Add($"Tanggal      : {laporanDate:dd MMMM yyyy}");
             lines.Add($"Usia Laporan : {usiaLaporan.Days} hari {usiaLaporan.Hours} jam");
             lines.Add($"Panjang Judul: {judul.Length} karakter");
